@@ -1,0 +1,16 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+// 1. Wrap the registration inside a function
+function pt_register_elementor_widgets() {
+    require_once PT_PATH . 'inc/widgets/class-room-widget.php';
+    \Elementor\Plugin::instance()->widgets_manager->register( new \Pixellers\Room_Widget() );
+}
+
+// 2. ONLY run this if Elementor is active
+add_action( 'elementor/widgets/register', 'pt_register_elementor_widgets' );
+
+// 3. Register Category (Safe to run independently)
+add_action( 'elementor/elements/categories_registered', function( $elements_manager ) {
+    $elements_manager->add_category( 'pixellers-widgets', [ 'title' => 'Pixellers Elements' ] );
+});

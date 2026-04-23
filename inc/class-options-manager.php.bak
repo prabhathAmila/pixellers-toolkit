@@ -1,0 +1,57 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+class PT_Options_Manager {
+
+    public function __construct() {
+        add_action( 'admin_menu', [ $this, 'add_pixellers_menu' ] );
+        add_action( 'admin_init', [ $this, 'register_settings' ] );
+    }
+
+    // 1. Create the Main Dashboard Menu
+    public function add_pixellers_menu() {
+        add_menu_page(
+            'Pixellers Settings', 
+            'Pixellers', 
+            'manage_options', 
+            'pixellers-toolkit', 
+            [ $this, 'render_options_page' ], 
+            'dashicons-admin-settings', 
+            30
+        );
+    }
+
+    // 2. Register Settings (Where you save data)
+    public function register_settings() {
+        register_setting( 'pt_settings_group', 'pt_brand_name' );
+        register_setting( 'pt_settings_group', 'pt_support_email' );
+    }
+
+    // 3. The UI (HTML/PHP)
+    public function render_options_page() {
+        ?>
+        <div class="wrap">
+            <h1>Pixellers Toolkit Dashboard</h1>
+            <form method="post" action="options.php">
+                <?php 
+                settings_fields( 'pt_settings_group' ); 
+                do_settings_sections( 'pt_settings_group' ); 
+                ?>
+                <table class="form-table">
+                    <tr>
+                        <th>Brand Name</th>
+                        <td><input type="text" name="pt_brand_name" value="<?php echo esc_attr( get_option('pt_brand_name') ); ?>" class="regular-text"></td>
+                    </tr>
+                    <tr>
+                        <th>Support Email</th>
+                        <td><input type="email" name="pt_support_email" value="<?php echo esc_attr( get_option('pt_support_email') ); ?>" class="regular-text"></td>
+                    </tr>
+                </table>
+                <?php submit_button(); ?>
+            </form>
+        </div>
+        <?php
+    }
+}
+
+new PT_Options_Manager();
