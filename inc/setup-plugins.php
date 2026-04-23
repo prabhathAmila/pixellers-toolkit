@@ -11,20 +11,32 @@ add_action('tgmpa_register', 'pt_register_required_plugins');
 function pt_register_required_plugins()
 {
     $plugins = [
+        // 1. Your Custom Plugin (Bundled in /plugins folder)
         [
             'name' => 'Pixellers Toolkit',
             'slug' => 'pixellers-toolkit',
-            'source' => get_template_directory() . '/plugins/pixellers-toolkit.zip', // Path to your bundled plugin
+            'source' => get_template_directory() . '/plugins/pixellers-toolkit.zip',
             'required' => true,
-            'force_activation' => true, // Optional: forces it to be active
+        ],
+        // 2. Elementor (From Repository)
+        [
+            'name' => 'Elementor Website Builder',
+            'slug' => 'elementor',
+            'required' => true,
+        ],
+        // 3. Contact Form 7 (From Repository)
+        [
+            'name' => 'Contact Form 7',
+            'slug' => 'contact-form-7',
+            'required' => true,
         ],
     ];
 
     $config = [
-        'id' => 'sahan-hotel',
+        'id' => 'pixellers-theme',
         'menu' => 'tgmpa-install-plugins',
         'has_notices' => true,
-        'dismissable' => false, // Forces user to install
+        'dismissable' => false,
     ];
 
     tgmpa($plugins, $config);
