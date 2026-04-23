@@ -1,0 +1,13 @@
+/* Ensure the button renders correctly as a clickable element */
+.pt-btn {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Ensure hover effect transitions smooth */
+.pt-btn:hover {
+    text-decoration: none;
+}
