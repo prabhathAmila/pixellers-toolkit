@@ -6,34 +6,33 @@ Version: 1.0.0
 Author: Pixellers
 */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Security: Exit if accessed directly
+if (!defined('ABSPATH'))
+    exit;
 
-// Define core constants for path management
-define( 'PT_PATH', plugin_dir_path( __FILE__ ) );
-define( 'PT_URL', plugin_dir_url( __FILE__ ) );
+define('PT_PATH', plugin_dir_path(__FILE__));
+define('PT_URL', plugin_dir_url(__FILE__));
 
-class Pixellers_Toolkit {
+class Pixellers_Toolkit
+{
 
-    public function __construct() {
-        // Initialize the module loader
-        $this->load_modules();
+    public function __construct()
+    {
+        // Wait until all plugins are loaded to avoid AJAX crashes
+        add_action('plugins_loaded', [$this, 'load_modules']);
     }
 
-    /**
-     * Module Loader:
-     * This scans the 'inc' folder and loads every file automatically.
-     * This makes your factory infinitely scalable.
-     */
-    private function load_modules() {
-        $modules = glob( PT_PATH . 'inc/*.php' );
-        
-        if ( ! empty( $modules ) ) {
-            foreach ( $modules as $module ) {
+    public function load_modules()
+    {
+        if (!did_action('elementor/loaded'))
+            return;
+
+        $modules = glob(PT_PATH . 'inc/*.php');
+        if (!empty($modules)) {
+            foreach ($modules as $module) {
                 require_once $module;
             }
         }
     }
 }
 
-// Start the Engine
 new Pixellers_Toolkit();
